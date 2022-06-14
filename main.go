@@ -11,7 +11,7 @@ func main() {
 
 	r.POST("/register", handler.Register)
 	r.POST("/login", handler.Login)
-	r.GET("/profile/:username/:password", handler.Profile)
+	r.GET("/profile/:nama/", handler.Profile)
 
 	r.Run(":8080")
 }

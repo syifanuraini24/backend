@@ -7,11 +7,9 @@ import (
 )
 
 func Profile(c *gin.Context) {
-	username := c.Param("username")
-	password := c.Param("password")
+	nama := c.Param("nama")
 
 	c.JSON(http.StatusOK, gin.H{
-		"username": username,
-		"password": password,
+		"nama": nama,
 	})
 }

@@ -8,7 +8,7 @@ import (
 
 func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
-		"username": "example",
+		"email":    "example",
 		"password": "example",
 	})
 }

@@ -28,7 +28,8 @@ func Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"username": user.Username,
+		"nama":     user.Nama,
+		"email":    user.Email,
 		"password": user.Password,
 	})
 }
