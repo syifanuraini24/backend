@@ -1,12 +1,14 @@
-package models
+package repository
 
 import "time"
 
 type User struct {
-	Id        string    `json:"id"`
+	ID        string    `json:"user_id"`
 	Nama      string    `json:"nama" binding:"required"`
 	Email     string    `json:"email" binding:"required"`
 	Password  string    `json:"password" binding:"required"`
+	Role      string    `json:"role"`
+	Loggedin  bool      `json:"loggedin"`
+	Token     string    `json:"token"`
 	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
 }

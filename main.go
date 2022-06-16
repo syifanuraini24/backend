@@ -4,25 +4,22 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"test/handler"
+	"test/api"
+	"test/repository"
 
-	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	_, err := sql.Open("sqlite3", "./test.db")
+	db, err := sql.Open("sqlite3", "./test.db")
 	if err != nil {
 		log.Fatal("Error opening database: ", err)
 	}
 
 	fmt.Println("Database connected")
 
-	r := gin.Default()
+	userRepo := repository.NewUserRepository(db)
 
-	r.POST("/register", handler.Register)
-	r.POST("/login", handler.Login)
-	r.GET("/profile/:nama/", handler.Profile)
-
-	r.Run(":8080")
+	mainAPI := api.NewAPI(*userRepo)
+	mainAPI.Start()
 }

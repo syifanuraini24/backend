@@ -15,6 +15,7 @@ require (
 	github.com/goccy/go-json v0.9.7 // indirect
 	github.com/gofiber/fiber v1.14.6 // indirect
 	github.com/gofiber/utils v0.0.10 // indirect
+	github.com/golang-jwt/jwt/v4 v4.4.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/gorilla/schema v1.1.0 // indirect
 	github.com/jinzhu/gorm v1.9.16 // indirect
