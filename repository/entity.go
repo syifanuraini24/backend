@@ -4,9 +4,9 @@ import "time"
 
 type User struct {
 	ID        string    `json:"user_id"`
-	Nama      string    `json:"nama" binding:"required"`
-	Email     string    `json:"email" binding:"required"`
-	Password  string    `json:"password" binding:"required"`
+	Nama      string    `json:"nama"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
 	Role      string    `json:"role"`
 	Loggedin  bool      `json:"loggedin"`
 	Token     string    `json:"token"`

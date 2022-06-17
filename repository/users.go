@@ -70,3 +70,42 @@ func (u *UserRepository) FetchUserRole(username string) (*string, error) {
 	return &role, nil
 	// TODO: replace this
 }
+
+func (u *UserRepository) Register(nama string, email string, password string) error {
+	_, err := u.db.Exec("INSERT INTO users (nama, email, password) VALUES (?, ?, ?)", nama, email, password)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (u *UserRepository) Update(id string, nama string, email string, password string, role string, loggedin bool) error {
+	_, err := u.db.Exec("UPDATE users SET nama = ?, email = ?, password = ?, role = ?, loggedin = ? WHERE id = ?", nama, email, password, role, loggedin, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (u *UserRepository) Delete(id string) error {
+	_, err := u.db.Exec("DELETE FROM users WHERE id = ?", id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (u *UserRepository) CheckUser(email string) (string, error) {
+	var user User
+	sqlStatement := "SELECT email FROM users WHERE email = ?"
+
+	err := u.db.QueryRow(sqlStatement, email).Scan(&user.Email)
+	if err != nil {
+		return "", err
+	}
+
+	return user.Email, nil
+}

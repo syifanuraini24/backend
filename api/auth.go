@@ -8,9 +8,19 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
+type UserErrorResponse struct {
+	Error string `json:"error"`
+}
+
 type User struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+	ID        string    `json:"user_id"`
+	Nama      string    `json:"nama"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+	Role      string    `json:"role"`
+	Loggedin  bool      `json:"loggedin"`
+	Token     string    `json:"token"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 type LoginSuccessResponse struct {
@@ -42,7 +52,7 @@ func (api *API) login(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	res, err := api.usersRepo.Login(user.Username, user.Password)
+	res, err := api.usersRepo.Login(user.Email, user.Password)
 
 	w.Header().Set("Content-Type", "application/json")
 	encoder := json.NewEncoder(w)
@@ -115,4 +125,30 @@ func (api *API) logout(w http.ResponseWriter, req *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte("logged out"))
+}
+
+func (api *API) register(w http.ResponseWriter, req *http.Request) {
+	api.AllowOrigin(w, req)
+	var user User
+	err := json.NewDecoder(req.Body).Decode(&user)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	res, _ := api.usersRepo.CheckUser(user.Email)
+	if len(res) != 0 {
+		w.Write([]byte("This email has been registered"))
+		return
+	}
+
+	err = api.usersRepo.Register(user.Nama, user.Email, user.Password)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("Error"))
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Success"))
 }

@@ -20,8 +20,21 @@ func main() {
 		email varchar(255), 
 		password varhar(255),
 		created_at datetime,
-		updated_at datetime);`)
+		role varchar(255),
+		loggedin boolean;
+		
+	CREATE TABLE IF NOT EXISTS biodata (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		nama varchar(255),
+		jenis_kelamin varchar(255),
+		no_hp integer,
+		alamat varchar(255),
+		created_at datetime,
+		FOREIGN KEY (id_biodata) REFERENCES users(id);
+		
+		`)
 	if err != nil {
 		log.Fatal("Error creating table: ", err)
 	}
+
 }
