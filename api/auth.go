@@ -38,8 +38,8 @@ var jwtKey = []byte("key")
 // Struct claim digunakan sebagai object yang akan di encode oleh jwt
 // jwt.StandardClaims ditambahkan sebagai embedded type untuk provide standart claim yang biasanya ada pada JWT
 type Claims struct {
-	Username string
-	Role     string
+	Email string
+	Role  string
 	jwt.StandardClaims
 }
 
@@ -69,8 +69,8 @@ func (api *API) login(w http.ResponseWriter, req *http.Request) {
 
 	// Buat claim menggunakan variable yang sudah didefinisikan diatas
 	claims := &Claims{
-		Username: *res,
-		Role:     *userRole,
+		Email: *res,
+		Role:  *userRole,
 		StandardClaims: jwt.StandardClaims{
 			// expiry time menggunakan time millisecond
 			ExpiresAt: expirationTime.Unix(),

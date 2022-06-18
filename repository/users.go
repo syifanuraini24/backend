@@ -9,6 +9,19 @@ type UserRepository struct {
 	db *sql.DB
 }
 
+type ProfileErrorResponse struct {
+	Error string `json:"error"`
+}
+
+type Profile struct {
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
+type ProfileSuccesResponse struct {
+	Profile []Profile `json:"profile"`
+}
+
 func NewUserRepository(db *sql.DB) *UserRepository {
 	return &UserRepository{db: db}
 }
@@ -80,7 +93,7 @@ func (u *UserRepository) Register(nama string, email string, password string) er
 	return nil
 }
 
-func (u *UserRepository) Update(id string, nama string, email string, password string, role string, loggedin bool) error {
+func (u *UserRepository) UpdateUser(id string, nama string, email string, password string, role string, loggedin bool) error {
 	_, err := u.db.Exec("UPDATE users SET nama = ?, email = ?, password = ?, role = ?, loggedin = ? WHERE id = ?", nama, email, password, role, loggedin, id)
 	if err != nil {
 		return err
@@ -89,7 +102,7 @@ func (u *UserRepository) Update(id string, nama string, email string, password s
 	return nil
 }
 
-func (u *UserRepository) Delete(id string) error {
+func (u *UserRepository) DeleteUser(id string) error {
 	_, err := u.db.Exec("DELETE FROM users WHERE id = ?", id)
 	if err != nil {
 		return err
@@ -108,4 +121,25 @@ func (u *UserRepository) CheckUser(email string) (string, error) {
 	}
 
 	return user.Email, nil
+}
+
+func (p *UserRepository) GetProfile() ([]User, error) {
+	var profiles []User
+
+	rows, err := p.db.Query("SELECT * FROM users")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var profile User
+		err := rows.Scan(&profile.ID, &profile.Nama, &profile.Email, &profile.Password, &profile.Role, &profile.Loggedin)
+		if err != nil {
+			return nil, err
+		}
+		profiles = append(profiles, profile)
+	}
+
+	return profiles, nil
 }

@@ -72,7 +72,7 @@ func (api *API) AuthMiddleWare(next http.Handler) http.Handler {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), "username", claims.Username)
+		ctx := context.WithValue(r.Context(), "email", claims.Email)
 		ctx = context.WithValue(ctx, "role", claims.Role)
 		ctx = context.WithValue(ctx, "props", claims)
 		next.ServeHTTP(w, r.WithContext(ctx))

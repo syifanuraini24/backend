@@ -12,3 +12,12 @@ type User struct {
 	Token     string    `json:"token"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+type Biodata struct {
+	ID           string    `json:"biodata_id"`
+	Nama         string    `json:"nama"`
+	JenisKelamin string    `json:"jenis_kelamin"`
+	NoHP         string    `json:"no_hp"`
+	Alamat       string    `json:"alamat"`
+	CreatedAt    time.Time `json:"created_at"`
+}
