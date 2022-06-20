@@ -25,7 +25,7 @@ func (api *API) profile(w http.ResponseWriter, req *http.Request) {
 	response := ProfileSuccesResponse{}
 	response.Profile = make([]Profile, 0)
 
-	profile, err := api.usersRepo.GetProfile()
+	profile, err := api.userRepo.GetProfile()
 	defer func() {
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)

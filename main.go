@@ -19,7 +19,8 @@ func main() {
 	fmt.Println("Database connected")
 
 	userRepo := repository.NewUserRepository(db)
+	biodataRepo := repository.NewBiodataRepository(db)
 
-	mainAPI := api.NewAPI(*userRepo)
+	mainAPI := api.NewAPI(*userRepo, *biodataRepo)
 	mainAPI.Start()
 }

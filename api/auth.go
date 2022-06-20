@@ -13,14 +13,13 @@ type UserErrorResponse struct {
 }
 
 type User struct {
-	ID        string    `json:"user_id"`
-	Nama      string    `json:"nama"`
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
-	Role      string    `json:"role"`
-	Loggedin  bool      `json:"loggedin"`
-	Token     string    `json:"token"`
-	CreatedAt time.Time `json:"created_at"`
+	ID       string `json:"user_id"`
+	Nama     string `json:"nama"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
+	Role     string `json:"role"`
+	Loggedin bool   `json:"loggedin"`
+	Token    string `json:"token"`
 }
 
 type LoginSuccessResponse struct {
@@ -52,7 +51,7 @@ func (api *API) login(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	res, err := api.usersRepo.Login(user.Email, user.Password)
+	res, err := api.userRepo.Login(user.Email, user.Password)
 
 	w.Header().Set("Content-Type", "application/json")
 	encoder := json.NewEncoder(w)
@@ -62,7 +61,7 @@ func (api *API) login(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	userRole, _ := api.usersRepo.FetchUserRole(*res)
+	userRole, _ := api.userRepo.FetchUserRole(*res)
 
 	// Deklarasi expiry time untuk token jwt
 	expirationTime := time.Now().Add(60 * time.Minute)
@@ -136,13 +135,13 @@ func (api *API) register(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	res, _ := api.usersRepo.CheckUser(user.Email)
+	res, _ := api.userRepo.CheckUser(user.Email)
 	if len(res) != 0 {
 		w.Write([]byte("This email has been registered"))
 		return
 	}
 
-	err = api.usersRepo.Register(user.Nama, user.Email, user.Password)
+	err = api.userRepo.Register(user.Nama, user.Email, user.Password)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte("Error"))

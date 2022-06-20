@@ -19,7 +19,6 @@ func main() {
 		nama varchar(255), 
 		email varchar(255), 
 		password varhar(255),
-		created_at datetime,
 		role varchar(255),
 		loggedin boolean;
 		
@@ -29,9 +28,10 @@ func main() {
 		jenis_kelamin varchar(255),
 		no_hp integer,
 		alamat varchar(255),
-		created_at datetime,
 		FOREIGN KEY (id_biodata) REFERENCES users(id);
 		
+
+	ALTER TABLE users DROP created_at ;
 		`)
 	if err != nil {
 		log.Fatal("Error creating table: ", err)
