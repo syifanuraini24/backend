@@ -21,7 +21,7 @@ func (p *ProfileRepository) GetProfile() ([]User, error) {
 
 	for rows.Next() {
 		var profile User
-		err := rows.Scan(&profile.ID, &profile.Nama, &profile.Email, &profile.Password, &profile.Role, &profile.Loggedin)
+		err := rows.Scan(&profile.ID, &profile.Nama, &profile.Email, &profile.Password)
 		if err != nil {
 			return nil, err
 		}
