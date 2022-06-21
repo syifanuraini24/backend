@@ -13,6 +13,7 @@ type UserErrorResponse struct {
 }
 
 type User struct {
+	Nama     string `json:""nama   db:"nama"`
 	Email    string `json:"email"  db:"email"`
 	Password string `json:"password"  db:"password"`
 }
