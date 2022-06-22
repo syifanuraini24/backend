@@ -13,7 +13,7 @@ func NewProfileRepository(db *sql.DB) *ProfileRepository {
 func (p *ProfileRepository) GetProfile() ([]User, error) {
 	var profiles []User
 
-	rows, err := p.db.Query("SELECT * FROM users")
+	rows, err := p.db.Query("SELECT * FROM users WHERE email = ?")
 	if err != nil {
 		return nil, err
 	}

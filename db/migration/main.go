@@ -29,6 +29,8 @@ func main() {
 		alamat varchar(255),
 		FOREIGN KEY (id_biodata) REFERENCES users(id) 
 		);
+
+		INSERT INTO biodata (nama, jenis_kelamin, no_hp, alamat) VALUES ("syifa", "perempuan", 085372544763, "jakarta");
 		`)
 	if err != nil {
 		log.Fatal("Error creating table: ", err)
