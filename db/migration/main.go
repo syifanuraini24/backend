@@ -18,20 +18,15 @@ func main() {
 		id INTEGER PRIMARY KEY AUTOINCREMENT, 
 		nama varchar(255), 
 		email varchar(255), 
-		password varhar(255),
-		role varchar(255),
-		loggedin boolean;
+		password varhar(255);
 		
 	CREATE TABLE IF NOT EXISTS biodata (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		nama varchar(255),
 		jenis_kelamin varchar(255),
-		no_hp integer,
+		no_hp varchar(15),
 		alamat varchar(255),
 		FOREIGN KEY (id_biodata) REFERENCES users(id);
-		
-
-	ALTER TABLE users DROP created_at ;
 		`)
 	if err != nil {
 		log.Fatal("Error creating table: ", err)

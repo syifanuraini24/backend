@@ -10,9 +10,9 @@ type User struct {
 }
 
 type Biodata struct {
-	ID           int    `json:"biodata_id"`
-	Nama         string `json:"nama"`
-	JenisKelamin string `json:"jenis_kelamin"`
-	NoHP         string `json:"no_hp"`
-	Alamat       string `json:"alamat"`
+	ID            int    `json:"biodata_id" db:"id"`
+	Nama          string `json:"nama" db:"nama"`
+	Jenis_Kelamin string `json:"jenis_kelamin" db:"jenis_kelamin"`
+	No_HP         string `json:"no_hp" db:"no_hp"`
+	Alamat        string `json:"alamat" db:"alamat"`
 }
