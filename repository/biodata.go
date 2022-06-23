@@ -1,9 +1,11 @@
 package repository
 
-import "database/sql"
+import (
+	"github.com/jmoiron/sqlx"
+)
 
 type BiodataRepository struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
 type BiodataErrorResponse struct {
@@ -14,7 +16,7 @@ type BiodataSuccesResponse struct {
 	Biodata []Biodata `json:"biodata"`
 }
 
-func NewBiodataRepository(db *sql.DB) *BiodataRepository {
+func NewBiodataRepository(db *sqlx.DB) *BiodataRepository {
 	return &BiodataRepository{db: db}
 }
 

@@ -1,17 +1,18 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"test/api"
 	"test/repository"
 
+	"github.com/jmoiron/sqlx"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
 func main() {
-	db, err := sql.Open("sqlite3", "./test.db")
+	db, err := sqlx.Open("sqlite3", "./test.db")
 	if err != nil {
 		log.Fatal("Error opening database: ", err)
 	}

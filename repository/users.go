@@ -1,12 +1,11 @@
 package repository
 
 import (
-	"database/sql"
-	"fmt"
+	"github.com/jmoiron/sqlx"
 )
 
 type UserRepository struct {
-	db *sql.DB
+	db *sqlx.DB
 }
 
 type ProfileErrorResponse struct {
@@ -14,7 +13,7 @@ type ProfileErrorResponse struct {
 }
 
 type Profile struct {
-	Name  string `json:"name"`
+	Name  string `json:"nama"`
 	Email string `json:"email"`
 }
 
@@ -22,8 +21,18 @@ type ProfileSuccesResponse struct {
 	Profile []Profile `json:"profile"`
 }
 
-func NewUserRepository(db *sql.DB) *UserRepository {
+func NewUserRepository(db *sqlx.DB) *UserRepository {
 	return &UserRepository{db: db}
+}
+
+func (u *UserRepository) FetchUserByID(id int64) (User, error) {
+	var user User
+	err := u.db.QueryRow("SELECT * FROM users WHERE id = ?", id).Scan(&user.ID, &user.Nama, &user.Email, &user.Password, &user.CreatedAt, &user.UpdatedAt)
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
 }
 
 func (u *UserRepository) FetchUsers() ([]User, error) {
@@ -37,7 +46,7 @@ func (u *UserRepository) FetchUsers() ([]User, error) {
 
 	for rows.Next() {
 		var user User
-		err := rows.Scan(&user.ID, &user.Nama, &user.Email, &user.Password, &user.Role, &user.Loggedin)
+		err := rows.Scan(&user.ID, &user.Nama, &user.Email, &user.Password, &user.CreatedAt, &user.UpdatedAt)
 		if err != nil {
 			return nil, err
 		}
@@ -45,23 +54,12 @@ func (u *UserRepository) FetchUsers() ([]User, error) {
 	}
 
 	return users, nil
-	// TODO: replace this
 }
 
-func (u *UserRepository) Login(username string, password string) (*string, error) {
-	users, err := u.FetchUsers()
-	if err != nil {
-		return nil, err
-	}
-
-	for _, user := range users {
-		if user.Email == username && user.Password == password {
-			return &user.Email, nil
-		}
-	}
-
-	return nil, fmt.Errorf("Login Failed")
-	// TODO: replace this
+func (u *UserRepository) Login(email string, password string) (*User, error) {
+	users := &User{}
+	err := u.db.Get(users, "SELECT * FROM users WHERE email = ? AND password = ? ", email, password)
+	return users, err
 }
 
 func (u *UserRepository) FetchUserRole(username string) (*string, error) {
@@ -81,7 +79,6 @@ func (u *UserRepository) FetchUserRole(username string) (*string, error) {
 	}
 
 	return &role, nil
-	// TODO: replace this
 }
 
 func (u *UserRepository) Register(nama string, email string, password string) error {
@@ -124,22 +121,7 @@ func (u *UserRepository) CheckUser(email string) (string, error) {
 }
 
 func (p *UserRepository) GetProfile() ([]User, error) {
-	var profiles []User
-
-	rows, err := p.db.Query("SELECT * FROM users")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	for rows.Next() {
-		var profile User
-		err := rows.Scan(&profile.ID, &profile.Nama, &profile.Email, &profile.Password, &profile.Role, &profile.Loggedin)
-		if err != nil {
-			return nil, err
-		}
-		profiles = append(profiles, profile)
-	}
-
-	return profiles, nil
+	users := []User{}
+	err := p.db.Select(&users, "SELECT * FROM users ")
+	return users, err
 }

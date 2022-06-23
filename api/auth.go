@@ -13,13 +13,9 @@ type UserErrorResponse struct {
 }
 
 type User struct {
-	ID       string `json:"user_id"`
-	Nama     string `json:"nama"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-	Role     string `json:"role"`
-	Loggedin bool   `json:"loggedin"`
-	Token    string `json:"token"`
+	Nama     string `json:"nama"  db:"nama"`
+	Email    string `json:"email"  db:"email"`
+	Password string `json:"password"  db:"password"`
 }
 
 type LoginSuccessResponse struct {
@@ -38,7 +34,7 @@ var jwtKey = []byte("key")
 // jwt.StandardClaims ditambahkan sebagai embedded type untuk provide standart claim yang biasanya ada pada JWT
 type Claims struct {
 	Email string
-	Role  string
+	// Role  string
 	jwt.StandardClaims
 }
 
@@ -61,15 +57,15 @@ func (api *API) login(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	userRole, _ := api.userRepo.FetchUserRole(*res)
+	// userRole, _ := api.userRepo.FetchUserRole(*res)
 
 	// Deklarasi expiry time untuk token jwt
 	expirationTime := time.Now().Add(60 * time.Minute)
 
 	// Buat claim menggunakan variable yang sudah didefinisikan diatas
 	claims := &Claims{
-		Email: *res,
-		Role:  *userRole,
+		Email: user.Email,
+		// Role:  *userRole,
 		StandardClaims: jwt.StandardClaims{
 			// expiry time menggunakan time millisecond
 			ExpiresAt: expirationTime.Unix(),
@@ -94,7 +90,7 @@ func (api *API) login(w http.ResponseWriter, req *http.Request) {
 		Path:    "/",
 	})
 
-	json.NewEncoder(w).Encode(LoginSuccessResponse{Username: *res, Token: tokenString})
+	json.NewEncoder(w).Encode(LoginSuccessResponse{Username: res.Nama, Token: tokenString})
 }
 
 func (api *API) logout(w http.ResponseWriter, req *http.Request) {

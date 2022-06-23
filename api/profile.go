@@ -10,8 +10,9 @@ type ProfileErrorResponse struct {
 }
 
 type Profile struct {
-	Name  string `json:"name"`
-	Email string `json:"email"`
+	ID_Profile int    `json:"id_profile"`
+	Name       string `json:"name"`
+	Email      string `json:"email"`
 }
 
 type ProfileSuccesResponse struct {
@@ -25,7 +26,7 @@ func (api *API) profile(w http.ResponseWriter, req *http.Request) {
 	response := ProfileSuccesResponse{}
 	response.Profile = make([]Profile, 0)
 
-	profile, err := api.userRepo.GetProfile()
+	profile, err := api.userRepo.FetchProfileByID(Profile.ID_Profilel)
 	defer func() {
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
